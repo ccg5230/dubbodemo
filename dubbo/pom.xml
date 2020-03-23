@@ -185,7 +185,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.32.Final</version>
+            <version>4.1.42.Final</version>
         </dependency>
         <!-- Apache Curator是Apache ZooKeeper的Java / JVM客户端库 ,注意与ZooKeeper版本兼容问题：Curator 2.x.x-兼容两个zk 3.4.x 和zk 3.5.x，Curator 3.x.x-兼容兼容zk 3.5-->
         <dependency>
