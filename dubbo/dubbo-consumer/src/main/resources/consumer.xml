@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <dubbo:application name="demotest-consumer" owner="demo" organization="ccgs"/>
+    <!--向 zookeeper 订阅 provider 的地址，由 zookeeper 定时推送-->
+    <dubbo:registry address="zookeeper://192.168.1.115:2181?backup=192.168.1.113:2181,192.168.1.114:2181"/>
+    <!--生成远程调用对象,设置接口调用超时时间-->
+    <dubbo:reference id="helloDubbo" interface="com.dubbo.api.HelloDubboService" timeout="2000"/>
+
+
+    <!-- 创建订单对象 ,改用注解不用xml
+    <dubbo:reference id="userService" interface="com.dubbo.api.UserService" timeout="2000"/>
+    <bean id="orderService" class="com.dubbo.impl.OrderServiceImpl">
+        <property name="userService" ref="userService"></property>
+    </bean>
+    -->
+    <!--4、配置服务消费者的统一规则 :超时设置5秒-->
+    <dubbo:consumer timeout="5000"/>
+
+    <!-- 增加spring注解扫描路径 -->
+    <context:component-scan base-package="com.dubbo"></context:component-scan>
+    <!-- 配置包扫描器，alibaba的@Reference注解 -->
+    <dubbo:annotation package="com.dubbo" />
+
+</beans>

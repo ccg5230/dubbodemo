@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd 
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        ">
+    <!--定义了提供方应用信息，用于计算依赖关系；在 dubbo-admin 或 dubbo-monitor 会显示这个名字，方便辨识-->
+    <dubbo:application name="demotest-provider" owner="programmer" organization="dubbox"/>
+    <!--使用 zookeeper 注册中心暴露服务，注意要先开启 zookeeper-->
+    <dubbo:registry address="zookeeper://192.168.1.115:2181?backup=192.168.1.113:2181,192.168.1.114:2181"/>
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20881" />
+    <!--生成远程服务代理 -->
+    <dubbo:service interface="com.dubbo.api.HelloDubboService" ref="dubboService" protocol="dubbo" />
+    <!-- 使用com.alibaba.dubbo.config.annotation.Service.Service注解代替
+    <dubbo:service interface="com.dubbo.api.UserService" ref="userService" protocol="dubbo" />
+    <bean id="userService" class="com.dubbo.provider.UserServiceImpl"/>
+    -->
+    <!--具体实现该接口的 bean-->
+    <bean id="dubboService" class="com.dubbo.provider.HelloDubboServiceImpl"/>
+
+    <!-- 增加spring注解扫描路径 -->
+    <context:component-scan base-package="com.dubbo"></context:component-scan>
+    <!-- 配置包扫描器，alibaba的@Service注解 -->
+    <dubbo:annotation package="com.dubbo" />
+
+</beans>
